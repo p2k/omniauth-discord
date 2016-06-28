@@ -32,7 +32,7 @@ module OmniAuth
 
       def raw_info
         if @raw_info.nil?
-          scopes = !options[:scope].nil? ? options[:scope].split(' ') : []
+          scopes = (options[:scope] || DEFAULT_SCOPE).split(' ')
           if scopes.include?('identify')
             @raw_info = access_token.get('users/@me').parsed
           else
@@ -55,7 +55,7 @@ module OmniAuth
             params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
           end
           params[:redirect_uri] = options[:redirect_uri] unless options[:redirect_uri].nil?
-          params[:scope] = params[:scope] || DEFAULT_SCOPE
+          params[:scope] ||= DEFAULT_SCOPE
         end
       end
     end
